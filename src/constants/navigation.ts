@@ -1,3 +1,1 @@
-export const NAV_LINKS = [
-  { label: 'Home', href: '/' },
-] as const
+export const NAV_LINKS = [{ label: 'Home', href: '/' }] as const
