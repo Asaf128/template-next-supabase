@@ -57,7 +57,7 @@ pnpm db:types      # Supabase Types generieren (Project ID in package.json setze
 
 ## Projektstruktur
 
-```
+```text
 src/
   app/                    → Routing, Pages, Layouts
   components/
