@@ -1,11 +1,11 @@
-# starter-next-supabase
+# template-next-supabase
 
 Template-Repo für neue Projekte. Einmal klonen, loslegen — alle Regeln sind von Tag 0 erzwungen.
 
 ## Stack
 
 | Kategorie | Technologie |
-|-----------|-------------|
+| --------- | ----------- |
 | Framework | Next.js 16 (App Router) |
 | Sprache | TypeScript (strict) |
 | Styling | Tailwind CSS v4 |
@@ -57,7 +57,7 @@ pnpm db:types      # Supabase Types generieren (Project ID in package.json setze
 
 ## Projektstruktur
 
-```
+```text
 src/
   app/                    → Routing, Pages, Layouts
   components/
@@ -87,8 +87,8 @@ src/
 - **Kein `console.log`** — ESLint `no-console` (nur `.error`/`.warn` erlaubt)
 - **Formatting** — Prettier + `prettier-plugin-tailwindcss`
 - **Conventional Commits** — commitlint als Git-Hook
-- **CI** — Prettier + ESLint + tsc + Build + pnpm audit bei jedem PR
-- **Secret-Scan** — gitleaks bei jedem Push
+- **CI** — Prettier + ESLint + tsc + Build bei jedem PR (parallel)
+- **Secret-Scan** — gitleaks bei jedem PR
 - **TypeScript strict + noUncheckedIndexedAccess**
 
 ## Farbschema anpassen
