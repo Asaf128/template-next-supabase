@@ -14,8 +14,10 @@ interface ButtonProps {
 }
 
 const variants = {
-  primary: 'bg-foreground text-[var(--text-on-dark)] hover:bg-[var(--surface-dark)] shadow-lg hover:shadow-xl',
-  secondary: 'bg-[var(--surface)] text-foreground hover:bg-[var(--surface-2)] border border-[var(--border)]',
+  primary:
+    'bg-foreground text-[var(--text-on-dark)] hover:bg-[var(--surface-dark)] shadow-lg hover:shadow-xl',
+  secondary:
+    'bg-[var(--surface)] text-foreground hover:bg-[var(--surface-2)] border border-[var(--border)]',
   ghost: 'bg-transparent text-foreground hover:text-[var(--text-secondary)]',
   accent: 'bg-[var(--accent)] text-white hover:bg-[var(--accent-dark)]',
 }
@@ -42,14 +44,14 @@ export function Button({
       onClick={onClick}
       disabled={disabled ?? isLoading}
       className={cn(
-        'uppercase tracking-[0.15em] font-medium transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed',
+        'cursor-pointer font-medium tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50',
         variants[variant],
         sizes[size],
         className
       )}
     >
       {isLoading ? (
-        <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
       ) : (
         children
       )}
