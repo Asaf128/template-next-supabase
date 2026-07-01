@@ -15,6 +15,7 @@ cp .env.example .env.local
 ```
 
 Werte aus dem [Supabase Dashboard](https://supabase.com/dashboard) → Project Settings → API eintragen:
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `NEXT_PUBLIC_APP_URL` → `http://localhost:3000` für lokale Entwicklung
@@ -41,16 +42,19 @@ pnpm db:types
 ## 6. GitHub einrichten
 
 **Secrets für CI** — Repo → Settings → Secrets → Actions → drei Secrets anlegen:
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `NEXT_PUBLIC_APP_URL`
 
 **Branch Protection auf `main`** — Repo → Settings → Branches:
+
 - „Require a pull request before merging" ✓
-- „Require status checks to pass" → `Lint, Types, Build` auswählen ✓
+- „Require status checks to pass" → `Prettier`, `ESLint`, `TypeScript`, `Build` auswählen ✓
 - „Do not allow bypassing" ✓
 
 **Security** — Repo → Settings → Security:
+
 - Dependabot alerts aktivieren ✓
 - Secret Scanning + Push Protection aktivieren ✓
 

@@ -1,4 +1,4 @@
-# starter-next-supabase
+# template-next-supabase
 
 Template-Repo für neue Projekte. Einmal klonen, loslegen — alle Regeln sind von Tag 0 erzwungen.
 
@@ -87,8 +87,8 @@ src/
 - **Kein `console.log`** — ESLint `no-console` (nur `.error`/`.warn` erlaubt)
 - **Formatting** — Prettier + `prettier-plugin-tailwindcss`
 - **Conventional Commits** — commitlint als Git-Hook
-- **CI** — Prettier + ESLint + tsc + Build + pnpm audit bei jedem PR
-- **Secret-Scan** — gitleaks bei jedem Push
+- **CI** — Prettier + ESLint + tsc + Build bei jedem PR (parallel)
+- **Secret-Scan** — gitleaks bei jedem PR
 - **TypeScript strict + noUncheckedIndexedAccess**
 
 ## Farbschema anpassen
