@@ -48,3 +48,13 @@ Next.js 16 (App Router) · TypeScript strict · Tailwind CSS v4 · Supabase · V
 ## Auto-Commit
 
 Nach JEDER abgeschlossenen Änderung automatisch committen und pushen ohne dass der User es extra sagen muss. Mit `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` am Ende.
+
+## Änderungs-Zusammenfassung
+
+Nach jeder abgeschlossenen Aufgabe (nach Push/Commit) eine kompakte Zusammenfassung ausgeben — was geändert wurde und warum. Format: kurze Einleitung, dann Tabelle oder Aufzählung. Nur die wesentlichen Punkte. Beispiel:
+
+> Gepusht. Zusammenfassung:
+>
+> | Datei / Punkt    | Was & Warum                                               |
+> | ---------------- | --------------------------------------------------------- |
+> | `ci.yml`         | `--ignore-scripts` — Build-Script-Fehler in pnpm v10      |
