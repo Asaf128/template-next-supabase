@@ -5,7 +5,7 @@ Template-Repo für neue Projekte. Einmal klonen, loslegen — alle Regeln sind v
 ## Stack
 
 | Kategorie | Technologie |
-|-----------|-------------|
+| --------- | ----------- |
 | Framework | Next.js 16 (App Router) |
 | Sprache | TypeScript (strict) |
 | Styling | Tailwind CSS v4 |
