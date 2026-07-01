@@ -24,7 +24,7 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --ignore-scripts
 
       - name: Prettier
         run: pnpm format:check

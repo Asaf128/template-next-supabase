@@ -28,6 +28,14 @@ minimumReleaseAgeExclude:
   - "@supabase/postgrest-js"
   - "@supabase/realtime-js"
   - "@supabase/storage-js"
+  - "@supabase/cli-darwin-arm64"
+  - "@supabase/cli-darwin-x64"
+  - "@supabase/cli-linux-arm64-musl"
+  - "@supabase/cli-linux-arm64"
+  - "@supabase/cli-linux-x64-musl"
+  - "@supabase/cli-linux-x64"
+  - "@supabase/cli-windows-arm64"
+  - "@supabase/cli-windows-x64"
   - framer-motion
   - motion-dom
   - supabase
