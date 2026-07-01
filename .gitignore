@@ -44,3 +44,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pnpm lockfile — Template-Repos committen keine Lockfiles.
+# Neue Projekte generieren ihren eigenen nach pnpm install.
+pnpm-lock.yaml
