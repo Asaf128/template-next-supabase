@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { APP_NAME, APP_URL } from '@/constants/config'
+import { Footer } from '@/components/layout/Footer'
+import { ANALYTICS_ENABLED, APP_NAME, APP_URL } from '@/constants/config'
 import './globals.css'
 
 // Fonts liegen als npm-Pakete lokal vor (@fontsource-variable/*). Der Build
@@ -42,8 +43,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <body className="bg-background text-text-primary antialiased">
         {children}
-        <Analytics />
-        <SpeedInsights />
+        <Footer />
+        {ANALYTICS_ENABLED && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   )

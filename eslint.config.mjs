@@ -24,6 +24,12 @@ const eslintConfig = defineConfig([
 
       // Named Exports only (Ausnahmen für Next.js-Dateien weiter unten)
       'import/no-default-export': 'error',
+
+      // Sicherheit: kein ungeprüftes HTML, kein Code aus Strings
+      'react/no-danger': 'error',
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
     },
   },
   {

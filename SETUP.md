@@ -30,6 +30,12 @@ Werte aus dem [Supabase Dashboard](https://supabase.com/dashboard) → Project S
 Die alten `anon`- und `service_role`-Keys laufen aus. Dieses Template nutzt nur
 noch die neuen Publishable und Secret Keys.
 
+`NEXT_PUBLIC_ENABLE_ANALYTICS` bleibt auf `false`, bis der Betreiber Vercel
+Analytics bewusst einschaltet und in die Datenschutzerklärung aufnimmt.
+
+Das Supabase-Projekt in einer EU-Region anlegen (Frankfurt). Die Region lässt
+sich später nicht ändern.
+
 ## 3. Supabase Types generieren
 
 In `package.json` im Script `db:types` den Platzhalter `YOUR_PROJECT_ID` durch
@@ -51,6 +57,7 @@ pnpm db:types
 
 1. Repo in [Vercel](https://vercel.com) importieren
 2. Environment Variables im Vercel Dashboard setzen (gleiche Werte wie `.env.local`)
+3. `vercel.json` legt die Region auf Frankfurt (`fra1`) fest. Nicht entfernen.
 
 ## 6. GitHub einrichten
 
@@ -76,6 +83,13 @@ läuft auch mit Platzhaltern:
 
 - „Require actions to be pinned to a full-length commit SHA" aktivieren
 - Workflow permissions auf „Read repository contents" stellen
+
+## 7. Datenschutz und Recht (nur der Betreiber kann das)
+
+- `/impressum` und `/datenschutz` sind Gerüste. Alle `[PLATZHALTER: ...]` durch echte, geprüfte Angaben ersetzen. Kein KI-Agent darf diese Texte erfinden.
+- Verträge zur Auftragsverarbeitung abschließen: Vercel, Supabase, E-Mail-Dienst.
+- Im Supabase Dashboard die [Production Security Checklist](https://supabase.com/docs/guides/security/production-checklist) abarbeiten.
+- Vor dem Livegang in Claude Code `/launch-check` ausführen. Der Skill prüft Sicherheit und Datenschutz und ändert nichts.
 
 ---
 
