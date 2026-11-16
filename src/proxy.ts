@@ -1,12 +1,14 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { env } from '@/lib/env'
 
+// Next.js 16: proxy.ts ersetzt middleware.ts. Erneuert die Supabase-Session bei jedem Request.
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
       cookies: {
         getAll() {
@@ -23,9 +25,12 @@ export async function proxy(request: NextRequest) {
     }
   )
 
-  // Wichtig: getUser() aufrufen um Session zu refreshen
-  await supabase.auth.getUser()
+  // Wichtig: zwischen createServerClient und getClaims() keinen Code einfügen.
+  // getClaims() prüft die JWT-Signatur und erneuert abgelaufene Tokens.
+  await supabase.auth.getClaims()
 
+  // Geschützte Routen: hier anhand der Claims auf /login umleiten.
+  // Dabei immer supabaseResponse (bzw. dessen Cookies) zurückgeben, sonst geht die Session verloren.
   return supabaseResponse
 }
 

@@ -1,10 +1,9 @@
 import type { MetadataRoute } from 'next'
-
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://example.com'
+import { APP_URL } from '@/constants/config'
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [{ userAgent: '*', allow: '/', disallow: ['/api/', '/auth/callback'] }],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${APP_URL}/sitemap.xml`,
   }
 }

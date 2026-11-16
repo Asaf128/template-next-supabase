@@ -15,7 +15,20 @@ const eslintConfig = defineConfig([
       '@typescript-eslint/no-explicit-any': 'error',
 
       // Kein console.log (nur .error / .warn erlaubt)
-      'no-console': ['warn', { allow: ['error', 'warn'] }],
+      'no-console': ['error', { allow: ['error', 'warn'] }],
+
+      // Named Exports only (Ausnahmen für Next.js-Dateien siehe unten)
+      'import/no-default-export': 'error',
+
+      // Kein direkter Zugriff auf process.env — immer über src/lib/env.ts
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "MemberExpression[object.name='process'][property.name='env']",
+          message:
+            'process.env nur in src/lib/env.ts lesen — sonst `env` aus @/lib/env importieren.',
+        },
+      ],
 
       // Konsistente Type-Imports
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
@@ -30,6 +43,14 @@ const eslintConfig = defineConfig([
       'src/app/**/loading.tsx',
       'src/app/**/not-found.tsx',
       'src/app/**/template.tsx',
+      'src/app/**/default.tsx',
+      'src/app/**/global-error.tsx',
+      'src/app/**/forbidden.tsx',
+      'src/app/**/unauthorized.tsx',
+      'src/app/**/twitter-image.tsx',
+      'src/app/**/icon.tsx',
+      'src/app/**/apple-icon.tsx',
+      'src/app/manifest.ts',
       'src/app/**/opengraph-image.tsx',
       'src/app/sitemap.ts',
       'src/app/robots.ts',
@@ -38,6 +59,10 @@ const eslintConfig = defineConfig([
     rules: {
       'import/no-default-export': 'off',
     },
+  },
+  {
+    files: ['src/lib/env.ts'],
+    rules: { 'no-restricted-syntax': 'off' },
   },
 ])
 
