@@ -1,29 +1,36 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { APP_NAME, APP_URL } from '@/constants/config'
 import './globals.css'
 
-const displayFont = Playfair_Display({
+// Fonts liegen als npm-Pakete lokal vor (@fontsource-variable/*). Der Build
+// braucht dadurch keinen Netzwerkzugriff auf Google Fonts und läuft auch in
+// abgeschotteten CI- und Agent-Umgebungen. Font tauschen: Paket installieren,
+// Pfad hier anpassen.
+const displayFont = localFont({
+  src: '../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2',
   variable: '--font-display',
-  subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: '400 900',
+  display: 'swap',
 })
 
-const bodyFont = Inter({
+const bodyFont = localFont({
+  src: '../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2',
   variable: '--font-body',
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: '100 900',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
-  title: { default: 'Starter — Projektbeschreibung', template: '%s | Starter' },
+  metadataBase: new URL(APP_URL),
+  title: { default: `${APP_NAME} — Projektbeschreibung`, template: `%s | ${APP_NAME}` },
   description: '150-160 Zeichen Beschreibung mit Hauptkeyword.',
   openGraph: {
     type: 'website',
     locale: 'de_DE',
-    siteName: 'Starter',
+    siteName: APP_NAME,
     images: [{ url: '/images/og-default.jpg', width: 1200, height: 630 }],
   },
   twitter: { card: 'summary_large_image' },

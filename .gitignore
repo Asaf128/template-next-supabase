@@ -48,3 +48,7 @@ next-env.d.ts
 # pnpm lockfile — Template-Repos committen keine Lockfiles.
 # Neue Projekte generieren ihren eigenen nach pnpm install.
 pnpm-lock.yaml
+
+# Persönliche Agent-Einstellungen (nicht teilen)
+CLAUDE.local.md
+.claude/settings.local.json
