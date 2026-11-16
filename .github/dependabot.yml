@@ -4,6 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Neue Versionen erst nach 7 Tagen übernehmen (Schutz vor kompromittierten
+    # Releases). Security-Updates sind davon nicht betroffen.
+    cooldown:
+      default-days: 7
     groups:
       minor-and-patch:
         update-types:
@@ -15,6 +19,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     groups:
       github-actions:
         patterns:

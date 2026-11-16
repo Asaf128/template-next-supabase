@@ -1,28 +1,23 @@
-'use client'
-
+import type { ComponentProps } from 'react'
 import { cn } from '@/lib/cn'
 
-interface ButtonProps {
-  children: React.ReactNode
-  variant?: 'primary' | 'secondary' | 'ghost' | 'accent'
-  size?: 'sm' | 'md' | 'lg'
-  className?: string
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent'
+type ButtonSize = 'sm' | 'md' | 'lg'
+
+interface ButtonProps extends ComponentProps<'button'> {
+  variant?: ButtonVariant
+  size?: ButtonSize
   isLoading?: boolean
-  disabled?: boolean
-  onClick?: () => void
-  type?: 'button' | 'submit'
 }
 
-const variants = {
-  primary:
-    'bg-foreground text-[var(--text-on-dark)] hover:bg-[var(--surface-dark)] shadow-lg hover:shadow-xl',
-  secondary:
-    'bg-[var(--surface)] text-foreground hover:bg-[var(--surface-2)] border border-[var(--border)]',
-  ghost: 'bg-transparent text-foreground hover:text-[var(--text-secondary)]',
-  accent: 'bg-[var(--accent)] text-white hover:bg-[var(--accent-dark)]',
+const variants: Record<ButtonVariant, string> = {
+  primary: 'bg-foreground text-text-on-dark hover:bg-surface-dark shadow-lg hover:shadow-xl',
+  secondary: 'bg-surface text-foreground hover:bg-surface-2 border-border border',
+  ghost: 'text-foreground hover:text-text-secondary bg-transparent',
+  accent: 'bg-accent text-text-on-dark hover:bg-accent-dark',
 }
 
-const sizes = {
+const sizes: Record<ButtonSize, string> = {
   sm: 'px-4 py-2 text-xs',
   md: 'px-6 py-3 text-sm',
   lg: 'px-8 py-4 text-sm',
@@ -33,22 +28,23 @@ export function Button({
   variant = 'primary',
   size = 'md',
   className,
-  isLoading,
-  disabled,
-  onClick,
+  isLoading = false,
+  disabled = false,
   type = 'button',
+  ...props
 }: ButtonProps) {
   return (
     <button
       type={type}
-      onClick={onClick}
-      disabled={disabled ?? isLoading}
+      disabled={disabled || isLoading}
+      aria-busy={isLoading}
       className={cn(
         'cursor-pointer font-medium tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50',
         variants[variant],
         sizes[size],
         className
       )}
+      {...props}
     >
       {isLoading ? (
         <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
