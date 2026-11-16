@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
   // Cache Components: Seiten sind standardmäßig dynamisch, Caching ist explizit
   // per 'use cache'. Dynamische Daten (cookies, Supabase-Session) gehören in <Suspense>.
   cacheComponents: true,
+  partialPrefetching: true,
   // Typsichere <Link href> und Route-Props (PageProps, LayoutProps)
   typedRoutes: true,
   images: {
