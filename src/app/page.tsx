@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="bg-background flex min-h-screen flex-col items-center justify-center">
+    <main className="bg-background flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center">
       <div className="text-center">
         <p className="text-text-secondary mb-4 text-xs tracking-[0.4em] uppercase">Template</p>
         <h1 className="text-foreground text-6xl sm:text-7xl lg:text-8xl">Starter</h1>
