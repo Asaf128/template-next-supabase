@@ -53,8 +53,10 @@ laden, den Rest nur bei Bedarf.
 | ----------------------------- | ---------------------------------------------------------------------------------- | -------------------------------- |
 | `AGENTS.md`                   | Zentrale Regeln. Offener Standard, den Claude Code, Copilot, Codex und Cursor lesen | jede Session                     |
 | `CLAUDE.md`                   | Importiert `AGENTS.md`, ergänzt Claude-spezifisches                                 | jede Session (Claude Code)       |
-| `.claude/rules/*.md`          | Detailregeln pro Bereich (Supabase, UI)                                            | nur beim Lesen passender Dateien |
-| `.claude/skills/*/SKILL.md`   | Mehrstufige Abläufe (`new-project`, `add-table`)                                   | nur bei Aufruf                   |
+| `.claude/rules/security.md`   | Sicherheitsregeln nach OWASP Top 10:2025, ausführlich                              | jede Session                     |
+| `.claude/rules/datenschutz.md` | Datenschutzregeln nach DSGVO, TDDDG und DDG, ausführlich                           | jede Session                     |
+| `.claude/rules/supabase.md`, `ui.md` | Detailregeln pro Bereich                                                    | nur beim Lesen passender Dateien |
+| `.claude/skills/*/SKILL.md`   | Mehrstufige Abläufe (`new-project`, `add-table`, `launch-check`)                   | nur bei Aufruf                   |
 | `.claude/settings.json`       | Freigaben für Prüfbefehle, Lesesperre für `.env`-Dateien                           | jede Session (Claude Code)       |
 | `node_modules/next/dist/docs` | Next.js-Doku passend zur installierten Version                                     | bei Bedarf                       |
 
@@ -65,12 +67,33 @@ Grundsätze dahinter:
 - **Build ohne Netzwerk.** Fonts liegen lokal, damit `pnpm build` auch in abgeschotteten Agent-Umgebungen läuft.
 - **Regeln an einer Stelle.** Inhalte in `AGENTS.md` pflegen, nicht in `CLAUDE.md` duplizieren.
 
+Ausnahme vom Sparen: Sicherheit und Datenschutz. Diese beiden Regeldateien
+laden bewusst immer und in voller Länge, weil ein vergessener Punkt dort teurer
+ist als die zusätzlichen Zeilen.
+
 Optional, bewusst nicht vorinstalliert (kostet Kontext und Pflege):
 
 ```bash
 # Offizielle Next.js-Skills, z. B. Prüfschleife gegen den laufenden Dev-Server
 npx skills add vercel/next.js --skill next-dev-loop
 ```
+
+## Sicherheit und Datenschutz ab Werk
+
+| Voreinstellung                         | Wo                                              |
+| -------------------------------------- | ----------------------------------------------- |
+| Analytics aus, bis bewusst eingeschaltet | `NEXT_PUBLIC_ENABLE_ANALYTICS` in `.env`        |
+| Server in Frankfurt                    | `vercel.json` (`fra1`), Supabase-Region EU      |
+| Keine fremden Skripte, Fonts, Frames   | CSP in `next.config.ts`, Fonts lokal            |
+| Security-Header inkl. HSTS             | `next.config.ts`                                |
+| Impressum und Datenschutz als Gerüst   | `/impressum`, `/datenschutz`, im Footer verlinkt |
+| Kein `eval`, kein ungeprüftes HTML     | ESLint                                          |
+| Bekannte Lücken blockieren den PR      | CI-Job `Audit` (`pnpm audit --prod`)            |
+| Prüfung vor dem Livegang               | `/launch-check` in Claude Code                  |
+
+Die Regeln sind technische Voreinstellungen, keine Rechtsberatung. Impressum
+und Datenschutzerklärung sind Gerüste mit Platzhaltern: Die Texte liefert der
+Betreiber, ein Anwalt oder ein geprüfter Generator.
 
 ## Projektstruktur
 
@@ -79,6 +102,8 @@ src/
   app/                    Routing, Pages, Layouts, globals.css
   components/
     shared/               Button, Container, Section
+    layout/               Footer (verlinkt Impressum und Datenschutz)
+    legal/                Gerüst für Impressum und Datenschutzerklärung
     [feature]/            Feature-Komponenten (bei Bedarf anlegen)
   actions/                Server Actions (bei Bedarf anlegen)
   hooks/                  Globale Custom Hooks (bei Bedarf anlegen)
@@ -106,7 +131,8 @@ src/
 - **Keine Hex-Farben in Komponenten**: ESLint `no-restricted-syntax`
 - **Formatierung**: Prettier + `prettier-plugin-tailwindcss`
 - **Conventional Commits**: commitlint als Git-Hook
-- **CI**: Prettier, ESLint, TypeScript und Build bei jedem PR, Actions auf Commit-SHAs gepinnt
+- **Kein `eval`, kein `dangerouslySetInnerHTML`**: ESLint `no-eval`, `react/no-danger`
+- **CI**: Prettier, ESLint, TypeScript, Build und Audit bei jedem PR, Actions auf Commit-SHAs gepinnt
 - **Secret-Scan**: gitleaks bei jedem PR
 - **TypeScript strict + noUncheckedIndexedAccess**
 

@@ -10,5 +10,7 @@ allein für Claude Code gilt. Regeln also in AGENTS.md pflegen, nicht hier.
 ## Claude Code
 
 - Die Dateien in `.claude/rules/` laden automatisch, sobald du passende Dateien liest. Nicht zusätzlich öffnen.
+- `security.md` und `datenschutz.md` laden in jeder Session. Sie gelten für jede Aufgabe.
 - `/new-project <name>` richtet ein neues Projekt aus diesem Template ein.
+- `/launch-check` prüft das Projekt vor dem Livegang auf Sicherheit und Datenschutz.
 - Der Skill `add-table` führt durch neue Tabellen, Spalten und Policies.

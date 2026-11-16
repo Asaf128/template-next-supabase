@@ -25,12 +25,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - `pnpm build`: vor jedem PR und nach Änderungen an Routing, Config oder Fonts.
 - `pnpm dev`: Dev-Server. Läuft bereits einer, den bestehenden weiterverwenden.
 - `pnpm db:types`: nach jeder Änderung am Datenbankschema.
+- `pnpm audit --prod`: vor jedem Release, läuft auch in CI.
 
 ## Struktur
 
 ```text
 src/app/                  Routen, Layouts, globals.css (alle Farb-Token)
 src/components/shared/    Button, Container, Section (einzige Quelle für Basis-UI)
+src/components/layout/    Footer (verlinkt Impressum und Datenschutz)
 src/components/<feature>/ Feature-Komponenten, max. 8 Dateien pro Ordner
 src/actions/              Server Actions (alle Mutationen)
 src/lib/supabase/         client.ts (Browser), server.ts (Server), proxy.ts (Session)
@@ -58,12 +60,34 @@ src/types/database.ts     generiert, nie von Hand ändern
 - Nach jeder abgeschlossenen Aufgabe: `pnpm check`, committen, auf den Feature-Branch pushen.
 - Danach eine kurze Zusammenfassung als Tabelle: Datei oder Punkt, was und warum.
 
+## Sicherheit und Datenschutz
+
+Beides hat Vorrang vor Tempo und Komfort. Die vollständigen Regeln stehen in
+`.claude/rules/security.md` und `.claude/rules/datenschutz.md` und gelten für
+jede Aufgabe. Lies beide, bevor du Code schreibst.
+
+Im Zweifel anhalten und den User fragen, vor allem bevor du:
+
+- die CSP oder einen Security-Header lockerst, eine Lint-Regel abschaltest oder eine Prüfung entfernst
+- einen externen Dienst, ein Skript, eine Einbettung oder eine Dependency hinzufügst
+- Analytics einschaltest oder etwas im Browser speicherst, das nicht technisch nötig ist
+- einen zerstörerischen Befehl ausführst (`drop`, `truncate`, `supabase db push`, `supabase db reset`, `git push --force`)
+- Rechtstexte, Firmendaten oder echte Personendaten schreiben müsstest
+
 ## Detailregeln
 
-Bevor du in einem dieser Bereiche arbeitest, lies die passende Datei:
+Gelten immer, vor jeder Aufgabe lesen:
 
-| Bereich                                      | Datei                       |
-| -------------------------------------------- | --------------------------- |
-| Supabase, Auth, Server Actions, Migrationen  | `.claude/rules/supabase.md` |
-| Komponenten, Styling, Seiten                 | `.claude/rules/ui.md`       |
-| Neues Projekt aus diesem Template einrichten | `SETUP.md`                  |
+| Bereich     | Datei                          |
+| ----------- | ------------------------------ |
+| Sicherheit  | `.claude/rules/security.md`    |
+| Datenschutz | `.claude/rules/datenschutz.md` |
+
+Bevor du in einem dieser Bereiche arbeitest, lies zusätzlich die passende Datei:
+
+| Bereich                                      | Datei                                   |
+| -------------------------------------------- | --------------------------------------- |
+| Supabase, Auth, Server Actions, Migrationen  | `.claude/rules/supabase.md`             |
+| Komponenten, Styling, Seiten                 | `.claude/rules/ui.md`                   |
+| Neues Projekt aus diesem Template einrichten | `SETUP.md`                              |
+| Prüfung vor dem Livegang                     | `.claude/skills/launch-check/SKILL.md`  |
