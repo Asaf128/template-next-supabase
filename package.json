@@ -7,16 +7,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
+    "lint": "eslint src/ scripts/",
+    "lint:fix": "eslint src/ scripts/ --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm format:check && pnpm lint --max-warnings=0 && pnpm typecheck && pnpm test",
+    "check": "pnpm format:check && pnpm lint --max-warnings=0 && pnpm typecheck && pnpm check:rls && pnpm test",
     "db:types": "supabase gen types --remote --lang typescript > src/types/database.ts",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "check:rls": "node scripts/check-rls.mjs"
   },
   "simple-git-hooks": {
     "commit-msg": "pnpm exec commitlint --edit $1"
@@ -49,7 +50,7 @@
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "simple-git-hooks": "^2.14.0",
-    "supabase": "^3.2.0",
+    "supabase": "^3.1.0",
     "tailwindcss": "^4.3.5",
     "typescript": "^6.0.3",
     "vitest": "^5.1.0"

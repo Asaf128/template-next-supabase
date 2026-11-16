@@ -13,19 +13,26 @@ const contentSecurityPolicy = [
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
+  "object-src 'none'",
+  'upgrade-insecure-requests',
 ].join('; ')
 
 const securityHeaders = [
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
+  },
   ...(process.env.NODE_ENV === 'production'
     ? [{ key: 'Content-Security-Policy', value: contentSecurityPolicy }]
     : []),
 ]
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   // Cache Components: Seiten sind standardmäßig dynamisch, Caching ist explizit
   // per 'use cache'. Dynamische Daten (cookies, Supabase-Session) gehören in <Suspense>.
   cacheComponents: true,

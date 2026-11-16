@@ -24,5 +24,7 @@ Nach jeder abgeschlossenen Aufgabe (nach Commit und Push) eine kompakte Zusammen
 
 ### Werkzeuge
 
-- `.mcp.json` bindet zwei MCP-Server ein: `next-devtools` (Fehler, Routen und Logs des laufenden Dev-Servers) und `supabase` (Doku-Suche, Schema, Logs — nur lesend)
-- `.claude/settings.json` gibt die Projekt-Scripts frei und sperrt das Lesen von `.env`-Dateien
+- **Hooks** (`.claude/settings.json`): formatieren jede geänderte Datei, blockieren Edits an `.env`, Lockfile und generierten Typen, und lassen dich erst stoppen, wenn `pnpm check` grün ist. Wenn ein Hook blockiert: Ursache beheben, nicht umgehen
+- **Skills** (`.claude/skills/`): `feature` für jede Aufgabe über mehrere Dateien, `db-migration` für jede Schema-Änderung
+- **Subagent** `security-reviewer`: nach Änderungen an Datenbank, Auth oder Server Actions aufrufen
+- **MCP** (`.mcp.json`): `next-devtools` für Fehler, Routen und Logs des Dev-Servers, `supabase` nur lesend für Doku, Schema und Advisors

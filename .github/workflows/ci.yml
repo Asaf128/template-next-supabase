@@ -9,6 +9,7 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Kleinste nötige Rechte. Actions sind auf Commit-SHA gepinnt (Dependabot hält sie aktuell).
 permissions:
   contents: read
 
@@ -16,6 +17,7 @@ jobs:
   check:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -26,19 +28,25 @@ jobs:
             run: pnpm lint --max-warnings=0
           - name: TypeScript
             run: pnpm typecheck
+          - name: RLS
+            run: pnpm check:rls
           - name: Tests
             run: pnpm test
           - name: Build
             run: pnpm build
+          - name: Audit
+            run: pnpm audit --prod --audit-level high
     env:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_placeholder' }}
       NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL || 'http://localhost:3000' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       # pnpm-Version kommt aus "packageManager" in package.json
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: pnpm

@@ -2,6 +2,12 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import nextVitals from 'eslint-config-next/core-web-vitals'
 import nextTs from 'eslint-config-next/typescript'
 
+const DEPRECATED_PACKAGES = [
+  { name: 'framer-motion', message: 'Paket heißt jetzt `motion` — Import aus `motion/react`.' },
+  { name: '@supabase/auth-helpers-nextjs', message: 'Veraltet — `@supabase/ssr` verwenden.' },
+  { name: 'next/router', message: 'Pages Router — im App Router `next/navigation` verwenden.' },
+]
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -29,6 +35,9 @@ const eslintConfig = defineConfig([
             'process.env nur in src/lib/env.ts lesen — sonst `env` aus @/lib/env importieren.',
         },
       ],
+
+      // Veraltete Pakete, die Agenten aus altem Trainingswissen gern einsetzen
+      'no-restricted-imports': ['error', { paths: DEPRECATED_PACKAGES }],
 
       // Konsistente Type-Imports
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
@@ -59,6 +68,31 @@ const eslintConfig = defineConfig([
     rules: {
       'import/no-default-export': 'off',
     },
+  },
+  {
+    // Data Access Layer: UI-Code spricht nie direkt mit der Datenbank.
+    // Server-Client nur in src/lib/dal, src/actions und Route Handlern.
+    files: ['src/components/**', 'src/hooks/**', 'src/app/**'],
+    ignores: ['src/app/**/route.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/lib/supabase/server',
+              message: 'Daten über src/lib/dal lesen und über src/actions schreiben.',
+            },
+            ...DEPRECATED_PACKAGES,
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Skripte sind CLI-Werkzeuge: process.env ist dort erlaubt
+    files: ['scripts/**'],
+    rules: { 'no-restricted-syntax': 'off' },
   },
   {
     files: ['src/lib/env.ts'],

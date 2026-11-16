@@ -1,8 +1,21 @@
-# Build-Scripts sind in pnpm standardmäßig gesperrt — nur explizit freigeben.
+# Supply-Chain-Schutz. pnpm 12 bringt die wichtigsten Regeln als Default mit:
+#   minimumReleaseAge: 1440   → neue Versionen erst nach 24 h installierbar
+#   strictDepBuilds: true     → Install bricht ab, wenn ein nicht freigegebenes Build-Script läuft
+#   blockExoticSubdeps: true  → transitive Dependencies nur aus der Registry
+# Diese Defaults nicht abschalten.
+
+# Build-Scripts nur für explizit freigegebene Pakete.
 allowBuilds:
   simple-git-hooks: true
   sharp: false
   unrs-resolver: false
+
+# Install verweigern, wenn eine neue Version weniger Vertrauensnachweise
+# (Trusted Publisher, Provenance) hat als ihre Vorgänger.
+trustPolicy: no-downgrade
+# Ausnahme: kommt über eslint-config-next, Version von April 2025, seitdem unverändert.
+trustPolicyExclude:
+  - eslint-import-resolver-typescript@3.10.1
 
 # ESLint 10: die von eslint-config-next gebündelten Plugins deklarieren ESLint 10
 # noch nicht als Peer, laufen aber damit (geprüft). Eintrag entfernen, sobald
@@ -10,13 +23,3 @@ allowBuilds:
 peerDependencyRules:
   allowedVersions:
     eslint: '10'
-
-# Pakete, die sofort nach Release installiert werden dürfen (kein Warte-Fenster).
-minimumReleaseAgeExclude:
-  - '@commitlint/*'
-  - '@supabase/*'
-  - supabase
-  - motion
-  - framer-motion
-  - motion-dom
-  - motion-utils

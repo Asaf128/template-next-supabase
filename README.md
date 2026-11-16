@@ -25,7 +25,7 @@ Template für neue Projekte, die von KI-Agenten entwickelt werden. Einmal als Te
 
 ```bash
 pnpm dev           # Dev-Server (localhost:3000)
-pnpm check         # Prettier + ESLint + TypeScript + Tests (wie in CI)
+pnpm check         # Prettier + ESLint + TypeScript + RLS-Check + Tests (wie in CI)
 pnpm build         # Production Build
 pnpm format        # Prettier anwenden
 pnpm lint:fix      # ESLint mit Auto-Fix
@@ -35,22 +35,28 @@ pnpm db:types      # Supabase-Types generieren (vorher: supabase link)
 
 ## Was maschinell erzwungen wird
 
-| Regel                                          | Wodurch                                |
-| ---------------------------------------------- | -------------------------------------- |
-| Max. 300 Zeilen pro Datei                      | ESLint `max-lines`                     |
-| Kein `any`                                     | ESLint                                 |
-| Named Exports only (außer Next.js-Dateien)     | ESLint `import/no-default-export`      |
-| Kein `console.log`                             | ESLint `no-console`                    |
-| `process.env` nur in `src/lib/env.ts`          | ESLint `no-restricted-syntax`          |
-| Env-Variablen vollständig und gültig           | Zod in `src/lib/env.ts` (Start/Build)  |
-| Typsichere Links und Route-Props               | Next.js `typedRoutes`                  |
-| Formatierung inkl. Tailwind-Klassenreihenfolge | Prettier                               |
-| Conventional Commits                           | commitlint als Git-Hook                |
-| Format, Lint, Typen, Tests, Build bei jedem PR | GitHub Actions                         |
-| Keine Secrets im Repo                          | gitleaks bei jedem PR                  |
-| Reproduzierbare Installs                       | `pnpm-lock.yaml` + `--frozen-lockfile` |
+| Regel                                                           | Wodurch                                                  |
+| --------------------------------------------------------------- | -------------------------------------------------------- |
+| Max. 300 Zeilen pro Datei                                       | ESLint `max-lines`                                       |
+| Kein `any`                                                      | ESLint                                                   |
+| Named Exports only (außer Next.js-Dateien)                      | ESLint `import/no-default-export`                        |
+| Kein `console.log`                                              | ESLint `no-console`                                      |
+| `process.env` nur in `src/lib/env.ts`                           | ESLint `no-restricted-syntax`                            |
+| Env-Variablen vollständig und gültig                            | Zod in `src/lib/env.ts` (Start/Build)                    |
+| Typsichere Links und Route-Props                                | Next.js `typedRoutes`                                    |
+| Formatierung inkl. Tailwind-Klassenreihenfolge                  | Prettier                                                 |
+| Conventional Commits                                            | commitlint als Git-Hook                                  |
+| Format, Lint, Typen, Tests, Build bei jedem PR                  | GitHub Actions                                           |
+| Keine Secrets im Repo                                           | gitleaks bei jedem PR                                    |
+| RLS auf jeder Tabelle, keine unsicheren Policy-Muster           | `scripts/check-rls.mjs` über alle Migrationen            |
+| Kein Datenbankzugriff aus UI-Code                               | ESLint `no-restricted-imports` (Data Access Layer)       |
+| Neue Paketversionen erst nach 24 h, keine fremden Build-Scripts | pnpm (`minimumReleaseAge`, `allowBuilds`, `trustPolicy`) |
+| Keine bekannten Lücken in Produktions-Dependencies              | `pnpm audit` in CI                                       |
+| Reproduzierbare Installs                                        | `pnpm-lock.yaml` + `--frozen-lockfile`                   |
 
-Nicht maschinell erzwungen, aber in `AGENTS.md` vorgeschrieben: RLS auf jeder Tabelle, Zod in jeder Server Action, User-ID aus der Session, keine Hex-Werte in Komponenten.
+Für Claude Code zusätzlich per Hook erzwungen (`.claude/settings.json`): Auto-Format nach jedem Edit, Schreibschutz für `.env`, Lockfile und generierte Typen, `pnpm check` muss grün sein, bevor der Agent stoppt.
+
+Nicht maschinell erzwungen, aber in `AGENTS.md` vorgeschrieben und vom Subagenten `security-reviewer` geprüft: Zod in jeder Server Action, User-ID aus der Session, Eigentumsprüfung, keine Hex-Werte in Komponenten.
 
 ## Farbschema anpassen
 

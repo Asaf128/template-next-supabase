@@ -1,0 +1,12 @@
+# Dateien, die Regeln, Rechte und Prüfungen steuern, brauchen ein Review vom Owner.
+# Wirkt zusammen mit Branch Protection ("Require review from Code Owners").
+/AGENTS.md              @Asaf128
+/CLAUDE.md              @Asaf128
+/.claude/               @Asaf128
+/.mcp.json              @Asaf128
+/.github/               @Asaf128
+/pnpm-workspace.yaml    @Asaf128
+/eslint.config.mjs      @Asaf128
+/scripts/               @Asaf128
+/next.config.ts         @Asaf128
+/supabase/migrations/   @Asaf128

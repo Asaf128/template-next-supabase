@@ -9,6 +9,9 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
+    # Neue Versionen erst nach einer Wartezeit vorschlagen (Schutz vor kompromittierten Releases)
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 10
 
   - package-ecosystem: 'github-actions'

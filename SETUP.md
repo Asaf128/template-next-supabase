@@ -58,18 +58,42 @@ Schema-Änderungen laufen ab jetzt nur noch als Migration: `pnpm exec supabase m
 **Branch Protection auf `main`** — Settings → Branches:
 
 - „Require a pull request before merging"
-- „Require status checks to pass" → `Prettier`, `ESLint`, `TypeScript`, `Tests`, `Build`, `gitleaks`
+- „Require status checks to pass" → `Prettier`, `ESLint`, `TypeScript`, `RLS`, `Tests`, `Build`, `Audit`, `gitleaks`
 - „Do not allow bypassing"
 
 **Security** — Settings → Security: Dependabot Alerts sowie Secret Scanning mit Push Protection aktivieren.
 
 ## 7. KI-Werkzeuge
 
-- **`AGENTS.md`** ist die einzige Regel-Datei. Claude Code, Codex, Cursor und Copilot lesen sie. Projektspezifisches (Domäne, Datenmodell, Begriffe) dort ergänzen, sobald es feststeht.
-- **`.mcp.json`** bindet zwei MCP-Server ein:
-  - `next-devtools` — Fehler, Routen und Logs des laufenden Dev-Servers
-  - `supabase` — nur lesend. Beim ersten Start meldet man sich per Browser an. Auf ein Projekt begrenzen: in der URL `&project_ref=<ref>` ergänzen. Sonst sieht der Agent alle Projekte des Accounts.
-- **`.claude/settings.json`** gibt die Projekt-Scripts frei und sperrt das Lesen von `.env`-Dateien.
+Bereits im Repo und ohne weiteres Zutun aktiv:
+
+| Datei                                 | Zweck                                                                                |
+| ------------------------------------- | ------------------------------------------------------------------------------------ |
+| `AGENTS.md`                           | Einzige Regel-Datei. Claude Code, Codex, Cursor und Copilot lesen sie                |
+| `docs/PROJECT.md`                     | Was gebaut wird. **Jetzt ausfüllen** (Ziel, Rollen, Datenmodell, Nicht-Ziele)        |
+| `.claude/settings.json`               | Rechte und Hooks: Auto-Format, Dateischutz, `pnpm check` als Pflicht vor dem Stoppen |
+| `.claude/skills/`                     | Abläufe `feature` und `db-migration`                                                 |
+| `.claude/agents/security-reviewer.md` | Nur lesender Review-Agent für Auth, RLS und Server Actions                           |
+| `.mcp.json`                           | MCP-Server `next-devtools` und `supabase` (nur lesend)                               |
+
+Einmalig von Hand:
+
+**Offizielle Skills installieren** (bewusst nicht im Template enthalten, damit du die aktuelle Version bekommst und selbst prüfst, was ins Repo kommt):
+
+```bash
+npx skills add supabase/agent-skills                    # Supabase + Postgres Best Practices
+npx skills add vercel/next.js --skill next-dev-loop     # Laufzeit-Prüfung im Browser
+```
+
+Die Skills landen unter `.agents/skills/`, die Versionen in `skills-lock.json`. Beides committen. Skills sind Anweisungen an den Agenten: nur aus offiziellen Quellen installieren und den Diff lesen.
+
+**Supabase-MCP auf das Projekt begrenzen:** in `.mcp.json` an die URL `&project_ref=<ref>` anhängen. Sonst sieht der Agent alle Projekte des Accounts. Den MCP-Server nur mit einem Entwicklungs-Projekt verbinden, nie mit Produktionsdaten: Inhalte aus der Datenbank können Anweisungen enthalten, die ein Agent befolgt.
+
+**Sandbox einschalten:** in Claude Code `/sandbox` ausführen. Damit laufen Shell-Befehle mit Dateisystem- und Netzwerk-Grenzen. Die Deny-Regeln in `.claude/settings.json` allein halten ein Skript nicht davon ab, `.env.local` zu lesen.
+
+**CODEOWNERS prüfen:** in `.github/CODEOWNERS` den GitHub-Namen anpassen und in der Branch Protection „Require review from Code Owners" aktivieren. Damit kann kein Agent seine eigenen Regeln, Hooks oder CI-Prüfungen ohne dein Review ändern.
+
+**Für CI und Agenten ohne Browser:** in Supabase ein Personal Access Token mit eingeschränktem Umfang anlegen (nur dieses Projekt), nicht das Token aus `supabase login` verwenden.
 
 ## Danach
 
